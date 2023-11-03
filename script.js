@@ -142,6 +142,7 @@ function showTask() {
   savedCompletedTasks.forEach(task => createTask(task.text, task.checked, task.deadline));
 }
 
+
 // Khởi tạo các thông tin khi tải trang
 function initializeApp() {
   getWeatherForHanoi();

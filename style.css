@@ -7,8 +7,12 @@
 .container {
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #153667, #4e085f);
+  /* background: linear-gradient(135deg, #153667, #4e085f); */
+  background-image: url(images/hinh-nen-may-tinh-4k-don-gian-ma-dep-chill.jpg);
   padding: 10px;
+}
+.list-container{
+  padding-bottom: 10px;
 }
 .todo-app {
   width: 100%;
@@ -63,40 +67,44 @@ ul li{
   user-select: none;
   cursor: pointer;
   position: relative;
+  background-color: rgb(249, 228, 228);
+  border-radius: 30px;
+  margin-bottom: 10px;
 }
 ul li::before{
   content: '';
   position: absolute;
-  height: 28px;
-  width: 28px;
+  height: 20px;
+  width: 20px;
   border-radius: 50%;
   background-image: url(images/unchecked.png);
   background-size: cover;
   background-position: center;
   top: 12px;
   left: 8px;
+  background-color: white;
 }
 ul li.checked{
   color: #555;
-  text-decoration: line-through;
+  /* text-decoration: line-through; */
 }
 ul li.checked::before{
   background-image: url(images/checked.png);
 }
 ul li span {
-  position: absolute; 
+  position: absolute;
   right: 0;
   top: 5px;
-  width: 40px;
-  height: 40px;
-  font-size: 22px;  
-  color: #555;
+  width: 30px;
+  height: 30px;
+  font-size: 25px;
+  color: #f00;
   line-height: 40px;
   text-align: center;
   border-radius: 50%;
 }
 ul li span:hover{
-  background: #edeef0;
+  background: #fef2f2;
 }
 
 .date-time {
@@ -164,6 +172,7 @@ ul li span:hover{
   border-color: #ff5722;
   box-shadow: 0 0 5px rgba(255,87,34,0.5);
 }
+
 
 
 
