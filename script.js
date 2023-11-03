@@ -3,45 +3,6 @@ const inputBox = document.getElementById('input-box');
 const listContainer = document.getElementById('list-container');
 const completedTasks = document.getElementById('completed-tasks');
 
-function requestNotificationPermission() {
-  Notification.requestPermission().then(function (permission) {
-    if (permission === 'granted') {
-      console.log('Notification permission granted.');
-    } else {
-      console.error('Notification permission not granted');
-    }
-  });
-}
-
-// Yêu cầu quyền khi khởi động ứng dụng
-requestNotificationPermission();
-
-function checkDeadlinesAndNotify() {
-  const currentTime = new Date().getTime();
-  for (let li of listContainer.children) {
-    const deadline = new Date(li.getAttribute('data-deadline')).getTime();
-    const taskName = li.getAttribute('data-text');
-    if (deadline <= currentTime) {
-      sendNotification(`Hết hạn công việc: ${taskName}`);
-    }
-  }
-}
-
-function sendNotification(message) {
-  if (Notification.permission === 'granted') {
-    new Notification(message);
-  } else {
-    console.error('Notification permission not granted');
-  }
-}
-
-// Kiểm tra deadline mỗi phút
-setInterval(checkDeadlinesAndNotify, 60000);  // 60000 milliseconds = 1 minute
-
-
-
-
-
 // Hàm thêm task mới
 function addTask() {
   const deadline = document.getElementById('deadline-input').value;
@@ -179,6 +140,38 @@ function showTask() {
   savedCompletedTasks.forEach(task => createTask(task.text, task.checked, task.deadline));
 }
 
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+const tomorrow = new Date(today);
+tomorrow.setDate(today.getDate() + 1);
+
+function isDeadlineApproaching(deadlineString) {
+  const deadlineDate = new Date(deadlineString);
+  deadlineDate.setHours(0, 0, 0, 0);
+  return deadlineDate <= tomorrow && deadlineDate >= today;
+}
+
+function checkAndNotifyForUpcomingDeadlines() {
+  const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  let alertMessages = [];
+
+  for (const task of savedTasks) {
+    if (isDeadlineApproaching(task.deadline)) {
+      const deadlineDate = new Date(task.deadline);
+      deadlineDate.setHours(0, 0, 0, 0);
+
+      if (deadlineDate.getTime() === today.getTime()) {
+        alertMessages.push(`Task "${task.text}" cần hoàn thành ngay trong hôm nay!`);
+      } else {
+        alertMessages.push(`Task "${task.text}" có deadline vào ngày ${task.deadline} đang sắp đến!`);
+      }
+    }
+  }
+
+  if (alertMessages.length) {
+    alert(alertMessages.join('\n'));
+  }
+}
 
 // Khởi tạo các thông tin khi tải trang
 function initializeApp() {
@@ -191,12 +184,12 @@ function initializeApp() {
   setInterval(updateCurrentDate, 1000);
   // Cập nhật thời tiết mỗi giờ (3600000 milliseconds = 1 hour)
   setInterval(getWeatherForHanoi, 3600000);
-  // Kiểm tra deadline mỗi phút
-  setInterval(checkDeadlinesAndNotify, 1000);
 }
 
 // Gọi hàm khởi tạo khi tải trang
 initializeApp();
+checkAndNotifyForUpcomingDeadlines();
+
 
 // Khi người dùng nhập một nhiệm vụ vào input box và nhấn 'Add':
 // - `addTask()` được gọi.
