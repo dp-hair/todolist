@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List App</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+
+<body>
+    <div class="date-time">
+        <span id="current-date"></span>
+    </div>
+    <div class="weather-info">
+        <span id="weather-location">Hà Nội</span> |
+        <span id="weather-temp">22°C</span> |
+        <span id="weather-description">Trời quang đãng</span>
+      </div>
+    <div class="container">
+        <div class="todo-app">
+            <h2>To-Do List <img src="images/icon.png" alt="To-Do Icon"></h2>
+            <div class="row">
+                <input type="text" id="input-box" placeholder="Add your text">
+                <input type="text" id="deadline-input" placeholder="Deadline"> <!-- Loại bỏ type="date" -->
+                <button onclick="addTask()">Add</button>
+            </div>
+            <h3>Tasks: <span id="task-count">0</span></h3>
+            <ul id="list-container">
+                <!-- Items will be added dynamically using JavaScript -->
+            </ul>
+            <h3>Completed Tasks:</h3>
+            <ul id="completed-tasks">
+            </ul>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> <!-- Thêm thư viện JavaScript của flatpickr -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            flatpickr("#deadline-input", {
+              enableTime: false,
+              dateFormat: "Y-m-d",
+              locale: "vi" 
+            });
+        });
+    </script>
+</body>
+
+</html>
