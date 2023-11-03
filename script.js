@@ -3,6 +3,43 @@ const inputBox = document.getElementById('input-box');
 const listContainer = document.getElementById('list-container');
 const completedTasks = document.getElementById('completed-tasks');
 
+function requestNotificationPermission() {
+  Notification.requestPermission().then(function (permission) {
+    if (permission === 'granted') {
+      console.log('Notification permission granted.');
+    } else {
+      console.error('Notification permission not granted');
+    }
+  });
+}
+
+// Yêu cầu quyền khi khởi động ứng dụng
+requestNotificationPermission();
+
+function checkDeadlinesAndNotify() {
+  const currentTime = new Date().getTime();
+  for (let li of listContainer.children) {
+    const deadline = new Date(li.getAttribute('data-deadline')).getTime();
+    const taskName = li.getAttribute('data-text');
+    if (deadline <= currentTime) {
+      sendNotification(`Hết hạn công việc: ${taskName}`);
+    }
+  }
+}
+
+function sendNotification(message) {
+  if (Notification.permission === 'granted') {
+    new Notification(message);
+  } else {
+    console.error('Notification permission not granted');
+  }
+}
+
+// Kiểm tra deadline mỗi phút
+setInterval(checkDeadlinesAndNotify, 60000);  // 60000 milliseconds = 1 minute
+
+
+
 
 
 // Hàm thêm task mới
@@ -154,6 +191,8 @@ function initializeApp() {
   setInterval(updateCurrentDate, 1000);
   // Cập nhật thời tiết mỗi giờ (3600000 milliseconds = 1 hour)
   setInterval(getWeatherForHanoi, 3600000);
+  // Kiểm tra deadline mỗi phút
+  setInterval(checkDeadlinesAndNotify, 1000);
 }
 
 // Gọi hàm khởi tạo khi tải trang
